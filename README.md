@@ -1,4 +1,4 @@
-# Лаунчер TVD Rally
+# TVD Rally Launcher
 
 <p align="center">
   <img src="images/tvd-rally.png" alt="Логотип TVD Rally" width="180">
@@ -12,14 +12,14 @@
 
 ## Скачать актуальную версию
 
-**Публичная версия: 3.2.66.**
+**Публичная версия: 3.2.67.**
 
-- [Скачать установщик TVD Rally 3.2.66 (.exe)](https://github.com/L3xi4/tvd-launcher-dr-2.0/releases/download/v3.2.66/TVD-Rally-Setup-3.2.66.exe).
-- [Скачать архив TVD Rally 3.2.66 для Windows](https://github.com/L3xi4/tvd-launcher-dr-2.0/releases/download/v3.2.66/TVD-Rally-3.2.66.zip).
+- [Скачать установщик TVD Rally 3.2.67 (.exe)](https://github.com/L3xi4/tvd-launcher-dr-2.0/releases/download/v3.2.67/TVD-Rally-Setup-3.2.67.exe).
+- [Скачать архив TVD Rally 3.2.67 для Windows](https://github.com/L3xi4/tvd-launcher-dr-2.0/releases/download/v3.2.67/TVD-Rally-3.2.67.zip).
 - [Последний выпуск на GitHub](https://github.com/L3xi4/tvd-launcher-dr-2.0/releases/latest) — изменения и файлы для скачивания.
 - [Установщик с ярлыками и инструкция на сайте](https://tvdrally.online/launcher).
 
-Архив нужно полностью распаковать, затем открыть папку **TVD Rally** и запустить **TVD Rally.exe**. Для установки с ярлыками скачайте **TVD-Rally-Setup-3.2.66.exe** из выпуска GitHub — он сразу устанавливает версию **3.2.66**.
+Архив нужно полностью распаковать, затем открыть папку **TVD Rally** и запустить **TVD Rally.exe**. Для установки с ярлыками скачайте **TVD-Rally-Setup-3.2.67.exe** из выпуска GitHub — он сразу устанавливает версию **3.2.67**.
 
 ## Возможности лаунчера
 
@@ -138,7 +138,7 @@
 
 1. Скачайте актуальный установщик со [страницы лаунчера](https://tvdrally.online/launcher).
 2. Запустите установщик и следуйте подсказкам.
-3. Откройте **TVD Rally** через ярлык на рабочем столе или в меню «Пуск».
+3. Откройте **TVD Rally** через ярлык **TVD Rally Launcher** на рабочем столе или в меню «Пуск».
 4. Войдите с логином и паролем от сайта TVD Rally. Если аккаунта ещё нет, [зарегистрируйтесь](https://tvdrally.online/register).
 5. Нажмите **«Поехали»** и подтвердите запрос Windows на права администратора, если он появится.
 6. После запуска игры откройте **«Клубы»**, выберите доступный чемпионат TVD и начните заезд.

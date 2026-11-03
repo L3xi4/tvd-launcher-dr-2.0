@@ -6,13 +6,13 @@
 
 [Setup]
 AppId={{6E2B1C3A-7D4F-4C8E-9A51-TVDRALLY0003}
-AppName=TVD Rally
+AppName=TVD Rally Launcher
 AppVersion={#AppVer}
 VersionInfoVersion={#AppVer}.0
 VersionInfoTextVersion={#AppVer}
 VersionInfoProductVersion={#AppVer}.0
 VersionInfoProductTextVersion={#AppVer}
-AppVerName=TVD Rally {#AppVer}
+AppVerName=TVD Rally Launcher {#AppVer}
 AppPublisher=TVD Rally Club
 AppPublisherURL=https://tvdrally.online
 AppSupportURL=https://tvdrally.online
@@ -52,8 +52,8 @@ Source: "..\dist\TVD Rally\*"; DestDir: "{app}"; Flags: ignoreversion recursesub
 Filename: "{app}\installed.ini"; Section: "TVD Rally"; Key: "version"; String: "{#AppVer}"
 
 [Icons]
-Name: "{autoprograms}\TVD Rally"; Filename: "{app}\TVD Rally.exe"; WorkingDir: "{app}"; IconFilename: "{app}\app\icon.ico"; Comment: "TVD Rally — лаунчер DiRT Rally 2.0"
-Name: "{autodesktop}\TVD Rally"; Filename: "{app}\TVD Rally.exe"; WorkingDir: "{app}"; IconFilename: "{app}\app\icon.ico"; Comment: "TVD Rally — лаунчер DiRT Rally 2.0"; Tasks: desktopicon
+Name: "{autoprograms}\TVD Rally Launcher"; Filename: "{app}\TVD Rally.exe"; WorkingDir: "{app}"; IconFilename: "{app}\app\icon-v2.ico"; Comment: "TVD Rally — лаунчер DiRT Rally 2.0"
+Name: "{autodesktop}\TVD Rally Launcher"; Filename: "{app}\TVD Rally.exe"; WorkingDir: "{app}"; IconFilename: "{app}\app\icon-v2.ico"; Comment: "TVD Rally — лаунчер DiRT Rally 2.0"; Tasks: desktopicon
 
 [Registry]
 Root: HKA; Subkey: "{#UninstKey}"; ValueType: string; ValueName: "DisplayName"; ValueData: "TVD Rally"
@@ -67,5 +67,7 @@ Root: HKA; Subkey: "{#UninstKey}"; ValueType: dword; ValueName: "NoModify"; Valu
 Root: HKA; Subkey: "{#UninstKey}"; ValueType: dword; ValueName: "NoRepair"; ValueData: 1
 
 [Run]
+; Обновить принадлежащие этой установке старые ярлыки с правами установщика.
+Filename: "{app}\python.exe"; Parameters: "-c ""import sys; sys.path.insert(0, sys.argv[1]); import tvd_install; tvd_install.rename_shortcuts(); tvd_install.refresh_shell_icons()"" ""{app}\app"""; WorkingDir: "{app}"; Flags: runhidden waituntilterminated
 ; от имени обычного пользователя, не администратора (иначе окно/журнал/профиль Edge станут «админскими»)
-Filename: "{app}\TVD Rally.exe"; WorkingDir: "{app}"; Description: "Запустить TVD Rally"; Flags: nowait postinstall skipifsilent runasoriginaluser
+Filename: "{app}\TVD Rally.exe"; WorkingDir: "{app}"; Description: "Запустить TVD Rally Launcher"; Flags: nowait postinstall skipifsilent runasoriginaluser

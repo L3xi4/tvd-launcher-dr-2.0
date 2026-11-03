@@ -10,6 +10,7 @@ on:
       - RELEASE_NOTES.md
       - scripts/prepare_release.py
       - scripts/verify_setup.py
+      - scripts/verify_shell_shortcuts.py
       - installer/tvd_rally.iss
       - .github/workflows/publish-release.yml
 
@@ -86,6 +87,8 @@ jobs:
             throw "Установка завершилась с кодом $($install.ExitCode)"
           }
           python scripts/verify_setup.py "$destination"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python scripts/verify_shell_shortcuts.py "$destination"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Опубликовать файлы в Releases
