@@ -11,6 +11,8 @@ on:
       - release.json
       - RELEASE_NOTES.md
       - scripts/prepare_release.py
+      - scripts/verify_setup.py
+      - installer/tvd_rally.iss
       - .github/workflows/publish-release.yml
 
 permissions:
@@ -22,8 +24,11 @@ concurrency:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      PYTHONUTF8: "1"
+      PYTHONIOENCODING: utf-8
     steps:
       - name: Получить описание выпуска
         shell: bash
@@ -38,7 +43,41 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 scripts/prepare_release.py
+          python scripts/prepare_release.py
+
+      - name: Собрать установщик для Windows
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $version = (Get-Content release.json -Raw | ConvertFrom-Json).version
+          Expand-Archive -LiteralPath "TVD-Rally-$version.zip" -DestinationPath dist
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) {
+            choco install innosetup -y --no-progress
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          & $iscc "/DAppVer=$version" installer\tvd_rally.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $setup = Get-Item "Output\TVD-Rally-Setup-$version.exe"
+          if (-not $setup.VersionInfo.FileVersion.StartsWith($version + '.')) {
+            throw "Версия установщика не совпадает с публичной версией"
+          }
+
+      - name: Проверить установку и состав файлов
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $version = (Get-Content release.json -Raw | ConvertFrom-Json).version
+          $setup = (Resolve-Path "Output\TVD-Rally-Setup-$version.exe").Path
+          $destination = Join-Path $env:RUNNER_TEMP 'TVD-Setup-Check'
+          $log = Join-Path $env:RUNNER_TEMP 'tvd-setup-check.log'
+          $install = Start-Process -FilePath $setup -ArgumentList @('/SP-', '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/TASKS=""', "/DIR=`"$destination`"", "/LOG=`"$log`"") -Wait -PassThru
+          if ($install.ExitCode -ne 0) {
+            Get-Content $log -ErrorAction SilentlyContinue
+            throw "Установка завершилась с кодом $($install.ExitCode)"
+          }
+          python scripts/verify_setup.py "$destination"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Опубликовать файлы в Releases
         env:
@@ -47,9 +86,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          VERSION="$(python3 -c 'import json; print(json.load(open("release.json"))["version"])')"
+          VERSION="$(python -c 'import json; print(json.load(open("release.json"))["version"])')"
           TAG="v$VERSION"
-          gh release create "$TAG" --verify-tag --draft \
-            --title "TVD Rally — версия $VERSION" --notes-file RELEASE_NOTES.md
-          gh release upload "$TAG" "TVD-Rally-$VERSION.zip" SHA256SUMS.txt
-          gh release edit "$TAG" --draft=false --latest
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --verify-tag --draft \
+              --title "TVD Rally — версия $VERSION" --notes-file RELEASE_NOTES.md
+          fi
+          gh release upload "$TAG" "TVD-Rally-$VERSION.zip" "Output/TVD-Rally-Setup-$VERSION.exe" SHA256SUMS.txt --clobber
+          gh release edit "$TAG" --title "TVD Rally — версия $VERSION" --notes-file RELEASE_NOTES.md --draft=false --latest
