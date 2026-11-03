@@ -64,9 +64,9 @@ jobs:
               throw "Компилятор завершился с кодом $LASTEXITCODE"
             }
             $setup = Get-Item "Output\TVD-Rally-Setup-$version.exe"
-            $fileVersion = $setup.VersionInfo.FileVersion
+            $fileVersion = "{0}.{1}.{2}" -f $setup.VersionInfo.FileMajorPart, $setup.VersionInfo.FileMinorPart, $setup.VersionInfo.FileBuildPart
             Write-Output "Версия установщика: $fileVersion"
-            if ($fileVersion -ne $version -and -not $fileVersion.StartsWith($version + '.')) {
+            if ($fileVersion -ne $version) {
               throw "Версия установщика $fileVersion не совпадает с $version"
             }
           } catch {

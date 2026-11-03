@@ -8,6 +8,10 @@
 AppId={{6E2B1C3A-7D4F-4C8E-9A51-TVDRALLY0003}
 AppName=TVD Rally
 AppVersion={#AppVer}
+VersionInfoVersion={#AppVer}.0
+VersionInfoTextVersion={#AppVer}
+VersionInfoProductVersion={#AppVer}.0
+VersionInfoProductTextVersion={#AppVer}
 AppVerName=TVD Rally {#AppVer}
 AppPublisher=TVD Rally Club
 AppPublisherURL=https://tvdrally.online
