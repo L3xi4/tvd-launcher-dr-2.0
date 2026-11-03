@@ -1,0 +1,46 @@
+name: Публикация версии лаунчера
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Получить описание выпуска
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --depth=1 origin "$GITHUB_SHA"
+          git checkout --detach FETCH_HEAD
+
+      - name: Скачать и проверить публичную сборку
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/prepare_release.py
+
+      - name: Опубликовать файлы в Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" --verify-tag --draft \
+            --title "TVD Rally — версия $VERSION" --notes-file RELEASE_NOTES.md
+          gh release upload "$GITHUB_REF_NAME" "TVD-Rally-$VERSION.zip" SHA256SUMS.txt
+          gh release edit "$GITHUB_REF_NAME" --draft=false --latest
