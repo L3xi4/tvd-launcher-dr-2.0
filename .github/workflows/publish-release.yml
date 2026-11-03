@@ -1,15 +1,23 @@
 name: Публикация версии лаунчера
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'v*'
+    branches:
+      - main
+    paths:
+      - release.json
+      - RELEASE_NOTES.md
+      - scripts/prepare_release.py
+      - .github/workflows/publish-release.yml
 
 permissions:
   contents: write
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: publish-public-release
   cancel-in-progress: false
 
 jobs:
@@ -39,8 +47,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          VERSION="${GITHUB_REF_NAME#v}"
-          gh release create "$GITHUB_REF_NAME" --verify-tag --draft \
+          VERSION="$(python3 -c 'import json; print(json.load(open("release.json"))["version"])')"
+          TAG="v$VERSION"
+          gh release create "$TAG" --verify-tag --draft \
             --title "TVD Rally — версия $VERSION" --notes-file RELEASE_NOTES.md
-          gh release upload "$GITHUB_REF_NAME" "TVD-Rally-$VERSION.zip" SHA256SUMS.txt
-          gh release edit "$GITHUB_REF_NAME" --draft=false --latest
+          gh release upload "$TAG" "TVD-Rally-$VERSION.zip" SHA256SUMS.txt
+          gh release edit "$TAG" --draft=false --latest

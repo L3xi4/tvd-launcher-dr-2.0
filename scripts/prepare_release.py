@@ -14,7 +14,7 @@ def prepare():
     version = release['version']
     if not re.fullmatch(r'3\.\d+\.\d+', version):
         raise ValueError('Неверная версия публичного выпуска')
-    if os.environ.get('GITHUB_REF_NAME', 'v' + version) != 'v' + version:
+    if os.environ.get('GITHUB_REF_TYPE') == 'tag' and os.environ.get('GITHUB_REF_NAME') != 'v' + version:
         raise ValueError('Тег не соответствует выбранной публичной версии')
     filename = f'TVD-Rally-{version}.zip'
     parsed = urlsplit(release['url'])
