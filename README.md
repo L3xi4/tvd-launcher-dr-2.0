@@ -12,14 +12,14 @@
 
 ## Скачать актуальную версию
 
-**Публичная версия: 3.2.67.**
+**Публичная версия: 3.2.69.**
 
-- [Скачать установщик TVD Rally 3.2.67 (.exe)](https://github.com/L3xi4/tvd-launcher-dr-2.0/releases/download/v3.2.67/TVD-Rally-Setup-3.2.67.exe).
-- [Скачать архив TVD Rally 3.2.67 для Windows](https://github.com/L3xi4/tvd-launcher-dr-2.0/releases/download/v3.2.67/TVD-Rally-3.2.67.zip).
+- [Скачать установщик TVD Rally 3.2.69 (.exe)](https://github.com/L3xi4/tvd-launcher-dr-2.0/releases/download/v3.2.69/TVD-Rally-Setup-3.2.69.exe).
+- [Скачать архив TVD Rally 3.2.69 для Windows](https://github.com/L3xi4/tvd-launcher-dr-2.0/releases/download/v3.2.69/TVD-Rally-3.2.69.zip).
 - [Последний выпуск на GitHub](https://github.com/L3xi4/tvd-launcher-dr-2.0/releases/latest) — изменения и файлы для скачивания.
 - [Установщик с ярлыками и инструкция на сайте](https://tvdrally.online/launcher).
 
-Архив нужно полностью распаковать, затем открыть папку **TVD Rally** и запустить **TVD Rally.exe**. Для установки с ярлыками скачайте **TVD-Rally-Setup-3.2.67.exe** из выпуска GitHub — он сразу устанавливает версию **3.2.67**.
+Архив нужно полностью распаковать, затем открыть папку **TVD Rally** и запустить **TVD Rally.exe**. Для установки с ярлыками скачайте **TVD-Rally-Setup-3.2.69.exe** из выпуска GitHub — он сразу устанавливает версию **3.2.69**.
 
 ## Возможности лаунчера
 

@@ -40,6 +40,25 @@ def verify(root):
             assert len(list(desktop.glob('*.lnk')))==1
         assert not t._set_shortcut_icon(new,root/'python.exe',root/'app/icon.ico')
         assert read_shortcut(new)==updated
+    # Register the sender on Windows and verify the identity used by the process.
+    import ctypes
+    import winreg
+    import native_window
+    native_window._register_shell_identity(icon, print)
+    with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r'Software\Classes\AppUserModelId\TVDRally.Launcher') as key:
+        assert winreg.QueryValueEx(key, 'DisplayName')[0] == 'TVD Rally Launcher'
+        assert winreg.QueryValueEx(key, 'IconUri')[0].lower() == str(icon.resolve()).lower()
+    current = ctypes.c_void_p()
+    get_id = ctypes.windll.shell32.GetCurrentProcessExplicitAppUserModelID
+    get_id.argtypes = [ctypes.POINTER(ctypes.c_void_p)]
+    get_id.restype = ctypes.c_long
+    assert get_id(ctypes.byref(current)) >= 0
+    try:
+        assert ctypes.wstring_at(current) == 'TVDRally.Launcher'
+    finally:
+        free = ctypes.windll.ole32.CoTaskMemFree
+        free.argtypes = [ctypes.c_void_p]
+        free(current)
     print('PASS: Windows COM updates only icon, preserves launch parameters, migrates shortcut name without duplicates, rejects another target')
 
 

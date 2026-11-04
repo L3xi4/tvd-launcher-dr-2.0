@@ -52,8 +52,8 @@ Source: "..\dist\TVD Rally\*"; DestDir: "{app}"; Flags: ignoreversion recursesub
 Filename: "{app}\installed.ini"; Section: "TVD Rally"; Key: "version"; String: "{#AppVer}"
 
 [Icons]
-Name: "{autoprograms}\TVD Rally Launcher"; Filename: "{app}\TVD Rally.exe"; WorkingDir: "{app}"; IconFilename: "{app}\app\icon-v2.ico"; Comment: "TVD Rally — лаунчер DiRT Rally 2.0"
-Name: "{autodesktop}\TVD Rally Launcher"; Filename: "{app}\TVD Rally.exe"; WorkingDir: "{app}"; IconFilename: "{app}\app\icon-v2.ico"; Comment: "TVD Rally — лаунчер DiRT Rally 2.0"; Tasks: desktopicon
+Name: "{autoprograms}\TVD Rally Launcher"; Filename: "{app}\TVD Rally.exe"; WorkingDir: "{app}"; IconFilename: "{app}\app\icon-v2.ico"; AppUserModelID: "TVDRally.Launcher"; Comment: "TVD Rally — лаунчер DiRT Rally 2.0"
+Name: "{autodesktop}\TVD Rally Launcher"; Filename: "{app}\TVD Rally.exe"; WorkingDir: "{app}"; IconFilename: "{app}\app\icon-v2.ico"; AppUserModelID: "TVDRally.Launcher"; Comment: "TVD Rally — лаунчер DiRT Rally 2.0"; Tasks: desktopicon
 
 [Registry]
 Root: HKA; Subkey: "{#UninstKey}"; ValueType: string; ValueName: "DisplayName"; ValueData: "TVD Rally"
