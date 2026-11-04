@@ -23,7 +23,30 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  notes:
+    if: startsWith(github.event.head_commit.message, '[notes]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Получить описание выпуска
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init .
+          git remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --depth=1 origin "$GITHUB_SHA"
+          git checkout --detach FETCH_HEAD
+      - name: Обновить только описание существующего выпуска
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(python3 -c 'import json; print(json.load(open("release.json"))["version"])')"
+          gh release edit "v$VERSION" --notes-file RELEASE_NOTES.md
   publish:
+    if: "!startsWith(github.event.head_commit.message, '[notes]')"
     runs-on: windows-latest
     timeout-minutes: 20
     env:
