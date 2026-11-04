@@ -86,10 +86,15 @@ jobs:
             Get-Content $log -ErrorAction SilentlyContinue
             throw "Установка завершилась с кодом $($install.ExitCode)"
           }
-          python scripts/verify_setup.py "$destination"
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          python scripts/verify_shell_shortcuts.py "$destination"
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          foreach ($check in @('scripts/verify_setup.py', 'scripts/verify_shell_shortcuts.py')) {
+            $checkOutput = & python $check "$destination" 2>&1
+            $checkCode = $LASTEXITCODE
+            $checkOutput | ForEach-Object { Write-Output $_ }
+            if ($checkCode -ne 0) {
+              $checkOutput | Select-Object -Last 14 | ForEach-Object { Write-Output "::error::$_" }
+              exit $checkCode
+            }
+          }
 
       - name: Опубликовать файлы в Releases
         env:
