@@ -11,6 +11,7 @@ on:
       - scripts/prepare_release.py
       - scripts/verify_setup.py
       - scripts/verify_shell_shortcuts.py
+      - scripts/verify_vr_texture.py
       - installer/tvd_rally.iss
       - .github/workflows/publish-release.yml
 
@@ -86,7 +87,7 @@ jobs:
             Get-Content $log -ErrorAction SilentlyContinue
             throw "Установка завершилась с кодом $($install.ExitCode)"
           }
-          foreach ($check in @('scripts/verify_setup.py', 'scripts/verify_shell_shortcuts.py')) {
+          foreach ($check in @('scripts/verify_setup.py', 'scripts/verify_shell_shortcuts.py', 'scripts/verify_vr_texture.py')) {
             $checkOutput = & python $check "$destination" 2>&1
             $checkCode = $LASTEXITCODE
             $checkOutput | ForEach-Object { Write-Output $_ }
